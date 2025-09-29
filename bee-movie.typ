@@ -1974,9 +1974,12 @@ All right. Take ten, everybody.
 Wrap it up, guys.
 I had virtually no rehearsal for that.```.text
 
+#let script = script.split("\n").join(" ").split(" ")
+#let chars-max = 905
 
-#let t = int(sys.inputs.at("t", default: 50138 /* script.len() */))
-#set page(columns: 3)
+#let t = int(sys.inputs.at("t", default: chars-max))
+
+// #set page(columns: 3)
 #set page(
   header: [script.len() = #script.len()],
   footer: [
@@ -1992,9 +1995,22 @@ I had virtually no rehearsal for that.```.text
     }
   ],
 )
-#set par(linebreaks: "optimized")
+#set par(
+  // linebreaks: "optimized",
+  // justify: true,
+)
 
-#par({
-  script.slice(calc.max(0, t - 2932), script.len() - t)
-  hide(text(script.slice(t)))
+#text(if t <= chars-max {
+  script.slice(0, t).join(" ")
+} else {
+  script.slice(t, script.len()).join(" ")
 })
+
+// #par({
+//   script
+//     .slice(calc.max(0, t - chars-max), count: if t + chars-max > script.len() {
+//       script.len() - t
+//     } else { t })
+//     .join(" ")
+//   hide(text(script.slice(t).join(" ")))
+// })
