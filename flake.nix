@@ -35,14 +35,15 @@
           ];
         };
       in rec {
-        # For `nix build` & `nix run`:
-        # packages.default = naersk'.buildPackage {
-        #   src = ./.;
-        # };
+        packages.default = tanim;
 
-        # For `nix develop`:
+        apps.default = flake-utils.lib.mkApp {
+          drv = tanim;
+          exeName = "tanim-cli";
+        };
+        
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ tanim ];
+          packages = with pkgs; [ tanim ];
         };
       }
     );
